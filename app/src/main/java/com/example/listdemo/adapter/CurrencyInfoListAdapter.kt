@@ -22,19 +22,23 @@ class CurrencyInfoListAdapter(private val lifecycleOwner: LifecycleOwner) :
                 oldItem: CurrencyInfoItemViewModel,
                 newItem: CurrencyInfoItemViewModel
             ): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem.id.value == newItem.id.value
             }
 
             override fun areContentsTheSame(
                 oldItem: CurrencyInfoItemViewModel,
                 newItem: CurrencyInfoItemViewModel
             ): Boolean {
-                return oldItem.name == newItem.name
+                return oldItem.name.value == newItem.name.value
             }
         }
     }
 
-//    var viewHolders = ArrayList<RecyclerView.ViewHolder>()
+    interface OnCurrencyItemClickListener {
+        fun onCurrencyItemClick(currencyInfoItemViewModel: CurrencyInfoItemViewModel)
+    }
+
+    var currencyItemClickListener: OnCurrencyItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -58,7 +62,9 @@ class CurrencyInfoListAdapter(private val lifecycleOwner: LifecycleOwner) :
                 if(itemViewModel is CurrencyInfoItemViewModel){
                     holder.binding.viewModel = itemViewModel
                     holder.binding.lifecycleOwner = lifecycleOwner
-//                    viewHolders.add(holder)
+                    if (currencyItemClickListener != null) {
+                        holder.bind(itemViewModel, currencyItemClickListener!!)
+                    }
                 }
             }
         }
@@ -73,6 +79,14 @@ class CurrencyInfoListAdapter(private val lifecycleOwner: LifecycleOwner) :
 
     class CurrencyInfoDefaultItemViewHolder(val binding: ItemCurrencyInfoDefaultBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        fun bind(
+            currencyInfoItemViewModel: CurrencyInfoItemViewModel,
+            clickListener: OnCurrencyItemClickListener
+        ) {
+            binding.itemCurrency.setOnClickListener {
+                clickListener.onCurrencyItemClick(currencyInfoItemViewModel)
+            }
+        }
     }
 
 }

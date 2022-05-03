@@ -1,5 +1,6 @@
 package com.example.listdemo.fragment
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,21 +17,34 @@ import com.example.listdemo.databinding.FragmentCurrencyListBinding
 import com.example.listdemo.viewmodel.CurrencyListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.example.listdemo.activity.DemoActivity
+import com.example.listdemo.viewmodel.CurrencyInfoItemViewModel
 
 @AndroidEntryPoint
-class CurrencyListFragment : Fragment() {
+class CurrencyListFragment : Fragment(), CurrencyInfoListAdapter.OnCurrencyItemClickListener {
 
     companion object {
 
         const val KEY_CURRENCY_INFO_LIST = "KEY_CURRENCY_INFO_LIST"
+
         @JvmStatic
-        fun newInstance(currencyInfo: ArrayList<CurrencyInfo>) =
+        fun newInstance(
+            currencyInfo: ArrayList<CurrencyInfo>,
+            currencyItemClickParentListenerOwner: OnCurrencyItemClickParentListener
+        ) =
             CurrencyListFragment().apply {
                 arguments = Bundle().apply {
                     putParcelableArrayList(KEY_CURRENCY_INFO_LIST, currencyInfo)
                 }
+                currencyItemClickParentListener = currencyItemClickParentListenerOwner
             }
     }
+
+    interface OnCurrencyItemClickParentListener {
+        fun onCurrencyItemClick(currencyInfoItemViewModel: CurrencyInfoItemViewModel)
+    }
+
+    var currencyItemClickParentListener: OnCurrencyItemClickParentListener? = null
 
     private lateinit var binding: FragmentCurrencyListBinding
     private lateinit var currencyInfoListAdapter: CurrencyInfoListAdapter
@@ -69,7 +83,7 @@ class CurrencyListFragment : Fragment() {
         }
     }
 
-    private fun subscribe(){
+    private fun subscribe() {
         currencyListViewModel.currencyInfoItemViewModels.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 currencyInfoListAdapter.submitList(it)
@@ -83,8 +97,9 @@ class CurrencyListFragment : Fragment() {
         val layoutManager = LinearLayoutManager(context)
         currencyInfoListAdapter = CurrencyInfoListAdapter(this).apply {
             this.setHasStableIds(true)
+            this.currencyItemClickListener = this@CurrencyListFragment
         }
-        currencyInfoListAdapter.let{
+        currencyInfoListAdapter.let {
             binding.listOfCurrencyInfo.adapter = currencyInfoListAdapter
         }
         binding.listOfCurrencyInfo.layoutManager = layoutManager
@@ -95,6 +110,10 @@ class CurrencyListFragment : Fragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
+    }
+
+    override fun onCurrencyItemClick(currencyInfoItemViewModel: CurrencyInfoItemViewModel) {
+        currencyItemClickParentListener?.onCurrencyItemClick(currencyInfoItemViewModel)
     }
 
 
