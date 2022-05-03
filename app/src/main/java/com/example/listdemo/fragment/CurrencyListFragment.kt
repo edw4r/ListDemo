@@ -17,10 +17,6 @@ import com.example.listdemo.viewmodel.CurrencyListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.recyclerview.widget.DividerItemDecoration
 
-
-
-
-
 @AndroidEntryPoint
 class CurrencyListFragment : Fragment() {
 

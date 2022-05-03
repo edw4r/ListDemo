@@ -13,6 +13,7 @@ class DemoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_demo)
 
+        supportActionBar?.hide()
         goToCurrencyListFragment()
     }
 
@@ -22,10 +23,19 @@ class DemoActivity : AppCompatActivity() {
         demoList.add(CurrencyInfo("Test 1", "Test 1", "Test 1"))
         demoList.add(CurrencyInfo("Test 2", "Test 2", "Test 2"))
         demoList.add(CurrencyInfo("Test 3", "Test 3", "Test 3"))
+        demoList.add(CurrencyInfo("Test 1", "Test 1", "Test 1"))
+        demoList.add(CurrencyInfo("Test 2", "Test 2", "Test 2"))
+        demoList.add(CurrencyInfo("Test 3", "Test 3", "Test 3"))
+        demoList.add(CurrencyInfo("Test 1", "Test 1", "Test 1"))
+        demoList.add(CurrencyInfo("Test 2", "Test 2", "Test 2"))
+        demoList.add(CurrencyInfo("Test 3", "Test 3", "Test 3"))
+        demoList.add(CurrencyInfo("Test 1", "Test 1", "Test 1"))
+        demoList.add(CurrencyInfo("Test 2", "Test 2", "Test 2"))
+        demoList.add(CurrencyInfo("Test 3", "Test 3", "Test 3"))
 
         val fragment = CurrencyListFragment.newInstance(demoList)
         supportFragmentManager.beginTransaction()
-            .replace(R.id.root_layout, fragment, null)
+            .replace(R.id.fragment_layout, fragment, null)
             .addToBackStack(null)
             .commit()
 
