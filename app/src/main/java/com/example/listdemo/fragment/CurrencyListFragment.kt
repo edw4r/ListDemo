@@ -87,6 +87,7 @@ class CurrencyListFragment : Fragment(), CurrencyInfoListAdapter.OnCurrencyItemC
     private fun subscribe() {
         currencyListViewModel.currencyInfoItemViewModels.observe(viewLifecycleOwner, Observer {
             if (it != null) {
+                currencyInfoListAdapter.submitList(null)
                 currencyInfoListAdapter.submitList(it)
             }
         })
@@ -97,7 +98,7 @@ class CurrencyListFragment : Fragment(), CurrencyInfoListAdapter.OnCurrencyItemC
 
         val layoutManager = LinearLayoutManager(context)
         currencyInfoListAdapter = CurrencyInfoListAdapter(this).apply {
-            this.setHasStableIds(true)
+            this.setHasStableIds(false)
             this.currencyItemClickListener = this@CurrencyListFragment
         }
         currencyInfoListAdapter.let {

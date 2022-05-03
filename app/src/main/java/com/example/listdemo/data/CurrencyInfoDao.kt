@@ -21,8 +21,8 @@ interface CurrencyInfoDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM currencyInfo ORDER BY name ASC")
-    fun getASCSorting(): List<CurrencyInfo>
+    suspend fun getASCSorting(): List<CurrencyInfo>
 
     @Query("SELECT * FROM currencyInfo ORDER BY name DESC")
-    fun getDESCSorting(): List<CurrencyInfo>
+    suspend fun getDESCSorting(): List<CurrencyInfo>
 }

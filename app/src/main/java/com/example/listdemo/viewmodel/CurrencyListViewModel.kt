@@ -1,7 +1,5 @@
 package com.example.listdemo.viewmodel
 
-import android.content.Context
-import android.os.Parcelable
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,17 +7,17 @@ import com.example.listdemo.data.CurrencyInfo
 import com.example.listdemo.data.CurrencyInfoDao
 import com.example.listdemo.data.MockDataHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CurrencyListViewModel @Inject constructor(
-    val currencyInfoDao: CurrencyInfoDao,
-    val mockDataHelper: MockDataHelper
+    private val currencyInfoDao: CurrencyInfoDao,
+    private val mockDataHelper: MockDataHelper
 ) : ViewModel() {
 
     var currencyInfoItemViewModels = MediatorLiveData<List<CurrencyInfoItemViewModel>>()
+    var isAscSorting = false
 
     fun setCurrencyList(list: ArrayList<CurrencyInfo>?) {
         currencyInfoItemViewModels.postValue(mapCurrencyData(list))
@@ -64,6 +62,23 @@ class CurrencyListViewModel @Inject constructor(
     }
 
     fun onSortButtonClick() {
+
+        viewModelScope.launch {
+            val resultFromDb = if(isAscSorting){
+                isAscSorting = false
+                currencyInfoDao.getASCSorting()
+            } else {
+                isAscSorting = true
+                currencyInfoDao.getDESCSorting()
+            }
+
+            val result = ArrayList<CurrencyInfo>()
+            for(item in resultFromDb){
+                result.add(item)
+            }
+
+            currencyInfoItemViewModels.postValue(mapCurrencyData(result))
+        }
 
     }
 
