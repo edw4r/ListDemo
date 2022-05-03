@@ -25,6 +25,15 @@ android {
             }
         }
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation":"$projectDir/schemas".toString(),
+                        "room.incremental":"true",
+                        "room.expandProjection":"true"]
+            }
+        }
+
     }
 
     buildTypes {
@@ -70,11 +79,16 @@ dependencies {
 
     // Room
     implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
 
     // ktx
     implementation "androidx.activity:activity-ktx:$activity_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$vm_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$vm_version"
     implementation "androidx.fragment:fragment-ktx:1.4.1"
+
+
+    // GSON
+    implementation 'com.google.code.gson:gson:2.9.0'
 }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,7 +49,7 @@ class CurrencyListFragment : Fragment(), CurrencyInfoListAdapter.OnCurrencyItemC
 
     private lateinit var binding: FragmentCurrencyListBinding
     private lateinit var currencyInfoListAdapter: CurrencyInfoListAdapter
-    private val currencyListViewModel: CurrencyListViewModel by viewModels()
+    private val currencyListViewModel: CurrencyListViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
