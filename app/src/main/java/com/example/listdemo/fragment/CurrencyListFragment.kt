@@ -70,8 +70,8 @@ class CurrencyListFragment : Fragment(), CurrencyInfoListAdapter.OnCurrencyItemC
         binding.lifecycleOwner = this
         binding.viewModel = this.currencyListViewModel
 
-        subscribe()
         setupRecyclerview()
+        subscribe()
         setCurrencyList()
 
     }

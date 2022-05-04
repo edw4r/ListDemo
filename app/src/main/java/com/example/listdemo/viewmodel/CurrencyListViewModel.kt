@@ -36,11 +36,11 @@ class CurrencyListViewModel @Inject constructor(
         if(list != null){
             for (item in list) {
                 val currentInfoItem = CurrencyInfoItemViewModel().apply {
-                    this.id.value = item.id
-                    this.name.value = item.name
-                    this.symbol.value = item.symbol
+                    this.id.postValue(item.id)
+                    this.name.postValue(item.name)
+                    this.symbol.postValue(item.symbol)
                     if(item.name.isNotEmpty()){
-                        this.initialChar.value = item.name.first().toString()
+                        this.initialChar.postValue(item.name.first().toString())
                     }
                 }
                 result.add(currentInfoItem)
